@@ -1,0 +1,12 @@
+{
+  "name": "SKANDA — God of War",
+  "short_name": "SKANDA",
+  "description": "The adaptive AI fitness commander",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06050d",
+  "theme_color": "#06050d",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+  ]
+}
