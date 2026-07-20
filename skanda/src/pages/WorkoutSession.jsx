@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { saveWorkoutSession, savePR } from '../lib/supabase'
-import { cacheSession, getCachedSession, updateStreak, getExerciseLast, saveExerciseLogs } from '../lib/workoutCache'
+import { cacheSession, getCachedSession, clearSession, updateStreak, getExerciseLast, saveExerciseLogs } from '../lib/workoutCache'
 import { verifyWorkoutPhoto, fileToBase64 } from '../lib/gemini'
 import { ChevronLeft, Check, Trophy, SkipForward, Info, ExternalLink, Dumbbell, AlertTriangle, Camera, ShieldCheck, ShieldX, Loader, X } from 'lucide-react'
 
@@ -405,6 +405,7 @@ export default function WorkoutSession() {
     }
 
     const streak = updateStreak()
+    clearSession()
 
     navigate('/summary', {
       state: {

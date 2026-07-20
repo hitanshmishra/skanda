@@ -428,7 +428,7 @@ const NUTR_LOG_KEY = 'skanda_nutrition_daily'
 
 export function saveNutritionDay(totals) {
   const today = new Date().toISOString().split('T')[0]
-  if (!totals.calories && !totals.protein) return
+  if (!totals.calories && !totals.protein_g) return
   try {
     const log = JSON.parse(localStorage.getItem(NUTR_LOG_KEY) || '{}')
     log[today] = totals

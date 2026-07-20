@@ -114,7 +114,7 @@ export default function AuthScreen() {
           <p className="text-skanda-dim text-sm mt-2 text-center">
             {mode === 'login'
               ? 'Your Oracle awaits.'
-              : '14-day full access · No card required.'}
+              : '30-day full access · No card required.'}
           </p>
         </div>
       </div>

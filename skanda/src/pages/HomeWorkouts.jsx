@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import {
   generateHomeWorkout, getHomeEquipment, saveHomeEquipment,
@@ -267,6 +267,7 @@ function ExercisePreviewRow({ ex, isSkill }) {
 
 export default function HomeWorkouts() {
   const navigate  = useNavigate()
+  const location  = useLocation()
   const { profile, session } = useAuth()
 
   const [equipment, setEquipment]         = useState(() => getHomeEquipment())
@@ -277,6 +278,13 @@ export default function HomeWorkouts() {
   const [loading, setLoading]             = useState(false)
   const [error, setError]                 = useState('')
   const [ladderTrack, setLadderTrack]     = useState(null)
+
+  // Auto-open the skill ladder modal when navigating back from a completed session
+  // that triggered a level-up (HomeWorkoutSession passes autoLevelUp via navigate state)
+  useEffect(() => {
+    const autoTrack = location.state?.autoLevelUp
+    if (autoTrack) setLadderTrack(autoTrack)
+  }, [location.state?.autoLevelUp])
 
   // Sync skill levels when tier changes
   useEffect(() => {

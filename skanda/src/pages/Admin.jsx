@@ -85,6 +85,11 @@ export default function Admin() {
 
   const isAdmin = session?.user?.email === ADMIN_EMAIL
 
+  // Redirect unauthenticated visitors — must be in useEffect, not render body
+  useEffect(() => {
+    if (!authLoading && !session) navigate('/auth', { replace: true })
+  }, [authLoading, session])
+
   useEffect(() => {
     if (!isAdmin) return
     fetchStats()
@@ -144,7 +149,6 @@ export default function Admin() {
   }
 
   if (!session) {
-    navigate('/auth', { replace: true })
     return null
   }
 

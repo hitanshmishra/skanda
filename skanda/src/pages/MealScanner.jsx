@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { scanMealPhoto, fileToBase64 } from '../lib/gemini'
 import { logNutrition } from '../lib/supabase'
-import { getScansRemaining, consumeScan, refundScan } from '../lib/workoutCache'
+import { getScansRemaining, consumeScan, refundScan, saveNutritionDay } from '../lib/workoutCache'
 import UpgradeModal from '../components/UpgradeModal'
 import { Camera, Upload, ChevronLeft, Check, Zap, AlertCircle, RefreshCw, SlidersHorizontal } from 'lucide-react'
 
@@ -115,7 +115,6 @@ export default function MealScanner() {
   async function logMeal() {
     const macros = editedMacros || result?.totals
     if (!macros || logged) return
-    setLogged(true)
     const foodNames = result?.foods?.map(f => f.name).join(', ').slice(0, 80) || 'Scanned Meal'
     const entry = {
       calories:  Math.round(macros.calories  || 0),
@@ -127,10 +126,25 @@ export default function MealScanner() {
         : foodNames,
     }
     try {
-      if (session?.user?.id) await logNutrition(session.user.id, entry)
+      if (session?.user?.id) {
+        await logNutrition(session.user.id, entry)
+      } else {
+        // Demo / non-auth: accumulate meal macros into today's localStorage nutrition totals
+        // so the Dashboard macro rings and NutritionTracker reflect the scanned meal
+        const today = new Date().toISOString().split('T')[0]
+        const stored = JSON.parse(localStorage.getItem('skanda_nutrition_daily') || '{}')
+        const existing = stored[today] || { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0 }
+        saveNutritionDay({
+          calories:  (existing.calories  || 0) + entry.calories,
+          protein_g: (existing.protein_g || 0) + entry.protein_g,
+          carbs_g:   (existing.carbs_g   || 0) + entry.carbs_g,
+          fat_g:     (existing.fat_g     || 0) + entry.fat_g,
+        })
+      }
     } catch {
-      // Log locally even if cloud write fails — already marked logged
+      // best-effort — still mark logged so the user isn't confused
     }
+    setLogged(true)
   }
 
   return (

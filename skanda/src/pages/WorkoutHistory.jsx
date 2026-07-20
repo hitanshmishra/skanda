@@ -162,8 +162,8 @@ export default function WorkoutHistory() {
   // Build date sets for the calendar — use local date to avoid UTC off-by-one
   const toLocalDate = iso => iso ? new Date(iso).toLocaleDateString('en-CA') : null
   const gymDateSet  = new Set(sessions.map(s => toLocalDate(s.created_at)).filter(Boolean))
-  // Only include localStorage sessions when not authenticated (avoids phantom duplicates)
-  const localHomeDates = session?.user?.id ? [] : getRecentHomeSessions().map(s => s.date)
+  // Always include localStorage home sessions — they're the source of truth until cloud sync runs
+  const localHomeDates = getRecentHomeSessions().map(s => s.date)
   const homeDateSet = new Set([
     ...homeSessions.map(s => toLocalDate(s.completed_at || s.created_at)),
     ...localHomeDates,

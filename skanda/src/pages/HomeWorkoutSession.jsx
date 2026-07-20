@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { saveHomeSessionLocal, saveSkillLevels, getSkillLevels } from '../lib/homeWorkouts'
-import { saveSkillProgress } from '../lib/supabase'
+import { saveSkillProgress, saveHomeWorkoutSession } from '../lib/supabase'
 import { ChevronLeft, Check, ChevronDown, ChevronUp, Flame, Timer, X, ExternalLink } from 'lucide-react'
 
 // ── Exercise tutorials (YouTube search links + beginner tips) ─────────────────
@@ -601,12 +601,20 @@ export default function HomeWorkoutSession() {
         }
       })
 
-    saveHomeSessionLocal({
+    const homeSessionData = {
       date:          new Date().toISOString().split('T')[0],
       day_type:      workout.day_type,
       duration_secs: durationSecs,
       exercises:     exercisesLogged,
-    })
+    }
+
+    saveHomeSessionLocal(homeSessionData)
+
+    // Sync to Supabase for authenticated users so WorkoutHistory calendar shows home sessions
+    if (session?.user?.id) {
+      saveHomeWorkoutSession(session.user.id, homeSessionData)
+        .catch(err => console.warn('[SKANDA] home session cloud save failed:', err))
+    }
 
     let readyToLevelUp = []
     if (completedSkillTracks.length > 0) {
