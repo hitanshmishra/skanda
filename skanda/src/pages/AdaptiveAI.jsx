@@ -15,7 +15,6 @@ export default function AdaptiveAI() {
   const [adapting, setAdapt]  = useState(false)
   const [newPlan, setNewPlan] = useState(null)
   const [error, setError]     = useState('')
-  const [selectedWeek, setSelected] = useState(0)
   const [evolutionsUsed, setEvolutionsUsed] = useState(() => getEvolutionsUsed())
   const [upgradeModal, setUpgradeModal]     = useState(false)
 

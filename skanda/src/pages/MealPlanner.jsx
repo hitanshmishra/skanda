@@ -25,7 +25,7 @@ export default function MealPlanner() {
   const [protein,  setProtein]  = useState(defaultProtein)
   const [carbs,    setCarbs]    = useState(defaultCarbs)
   const [fat,      setFat]      = useState(defaultFat)
-  const [goal,     setGoal]     = useState(profile?.goal || 'muscle gain')
+  const [goal,     setGoal]     = useState((profile?.goal || 'muscle gain').replace(/_/g, ' '))
   const [plan,     setPlan]     = useState(null)
   const [loading,  setLoading]  = useState(false)
   const [error,    setError]    = useState('')

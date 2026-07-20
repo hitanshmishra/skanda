@@ -236,7 +236,7 @@ export default function SixTrials() {
   const trial       = step > 0 ? TRIAL_META[step - 1] : null
 
   function canAdvance() {
-    if (step === 0) return form.name && form.age && form.weight_lbs && form.height_ft
+    if (step === 0) return form.name && form.age && Number(form.weight_lbs) > 0 && form.height_ft
     if (!trial) return true
     if (trial.isMile) return !!form.mile_min
     return !!form[trial.field]
@@ -284,7 +284,6 @@ export default function SixTrials() {
 
       initTrial()   // start the 30-day full-access trial clock
       setProfile(profile)
-      cacheProfile(profile)
       navigate('/tier-reveal', { state: { tier: tierResult, profile } })
     } catch (err) {
       setError(err.message || 'Something went wrong — try again.')

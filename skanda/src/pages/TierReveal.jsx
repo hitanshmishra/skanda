@@ -65,7 +65,7 @@ export default function TierReveal() {
     setGenError('')
     try {
       const p          = profileData || profile
-      const daysPerWeek = tierKey === 'skanda' ? 5 : tierKey === 'veer' ? 4 : 3
+      const daysPerWeek = p?.days_per_week || (tierKey === 'skanda' ? 5 : tierKey === 'veer' ? 4 : 3)
       const planParams  = {
         tier: tierKey,
         goal: p?.goal || 'muscle_gain',

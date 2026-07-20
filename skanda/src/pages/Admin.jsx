@@ -28,6 +28,37 @@ function StatCard({ icon: Icon, label, value, sub, color = '#c8922a' }) {
   )
 }
 
+function TierBar({ stats }) {
+  const tiers = stats?.tiers || {}
+  const total = Object.values(tiers).reduce((s, v) => s + Number(v), 0)
+  if (total === 0) return null
+  const order = ['arambha', 'veer', 'skanda']
+  return (
+    <div className="skanda-card p-4">
+      <p className="text-skanda-muted text-xs uppercase tracking-widest mb-3">Tier Distribution</p>
+      <div className="flex rounded-full overflow-hidden h-4 mb-3">
+        {order.map(t => {
+          const pct = ((Number(tiers[t] || 0) / total) * 100).toFixed(1)
+          if (pct === '0.0') return null
+          return (
+            <div key={t} style={{ width: pct + '%', background: TIER_COLORS[t] }}
+              title={`${t}: ${tiers[t]}`} />
+          )
+        })}
+      </div>
+      <div className="flex gap-4 flex-wrap">
+        {order.map(t => (
+          <div key={t} className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: TIER_COLORS[t] }} />
+            <span className="text-skanda-muted text-xs capitalize">{t}</span>
+            <span className="text-skanda-text text-xs font-bold">{tiers[t] || 0}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function timeAgo(iso) {
   if (!iso) return 'Never'
   const diff = Date.now() - new Date(iso).getTime()
@@ -132,37 +163,6 @@ export default function Admin() {
     )
   }
 
-  function TierBar() {
-    const tiers = stats?.tiers || {}
-    const total = Object.values(tiers).reduce((s, v) => s + Number(v), 0)
-    if (total === 0) return null
-    const order = ['arambha', 'veer', 'skanda']
-    return (
-      <div className="skanda-card p-4">
-        <p className="text-skanda-muted text-xs uppercase tracking-widest mb-3">Tier Distribution</p>
-        <div className="flex rounded-full overflow-hidden h-4 mb-3">
-          {order.map(t => {
-            const pct = ((Number(tiers[t] || 0) / total) * 100).toFixed(1)
-            if (pct === '0.0') return null
-            return (
-              <div key={t} style={{ width: pct + '%', background: TIER_COLORS[t] }}
-                title={`${t}: ${tiers[t]}`} />
-            )
-          })}
-        </div>
-        <div className="flex gap-4 flex-wrap">
-          {order.map(t => (
-            <div key={t} className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full" style={{ background: TIER_COLORS[t] }} />
-              <span className="text-skanda-muted text-xs capitalize">{t}</span>
-              <span className="text-skanda-text text-xs font-bold">{tiers[t] || 0}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-dvh bg-skanda-bg flex flex-col">
       <header className="px-5 pt-6 pb-4 flex items-center gap-3 border-b border-skanda-border">
@@ -234,7 +234,7 @@ export default function Admin() {
                     sub="registered in 7 days" />
                 </div>
 
-                <TierBar />
+                <TierBar stats={stats} />
 
                 <p className="text-skanda-muted text-xs uppercase tracking-widest pt-2">This Week</p>
                 <div className="grid grid-cols-2 gap-3">

@@ -88,12 +88,14 @@ function getTutorial(name) {
 
 function RestTimerOverlay({ secs, onDismiss }) {
   const [left, setLeft] = useState(secs)
+  const dismissRef = useRef(onDismiss)
+  useEffect(() => { dismissRef.current = onDismiss })
 
   useEffect(() => {
-    if (left <= 0) { onDismiss(); return }
+    if (left <= 0) { dismissRef.current(); return }
     const t = setTimeout(() => setLeft(l => l - 1), 1000)
     return () => clearTimeout(t)
-  }, [left, onDismiss])
+  }, [left])
 
   const pct = Math.min(100, ((secs - left) / secs) * 100)
   const circumference = 2 * Math.PI * 42
@@ -514,7 +516,7 @@ function FinisherCard({ finisher }) {
 export default function HomeWorkoutSession() {
   const navigate  = useNavigate()
   const location  = useLocation()
-  const { session } = useAuth()
+  const { session, profile } = useAuth()
   const { workout, skillLevels: initSkillLevels } = location.state || {}
 
   const [setLogs, setSetLogs]         = useState({})
@@ -609,7 +611,7 @@ export default function HomeWorkoutSession() {
     let readyToLevelUp = []
     if (completedSkillTracks.length > 0) {
       // Re-read current skill levels from localStorage to avoid stale snapshot
-      const currentLevels = getSkillLevels()
+      const currentLevels = getSkillLevels(profile?.tier)
       const updated = { ...currentLevels }
       completedSkillTracks.forEach(track => {
         if (updated[track]) {

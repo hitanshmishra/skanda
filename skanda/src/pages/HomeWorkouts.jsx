@@ -572,7 +572,7 @@ export default function HomeWorkouts() {
 
             {/* Begin session */}
             <button
-              onClick={() => navigate('/home-session', { state: { workout, skillLevels, equipment } })}
+              onClick={() => navigate('/home-workout-session', { state: { workout, skillLevels, equipment } })}
               className="btn-gold w-full py-4 font-cinzel font-bold tracking-wide flex items-center justify-center gap-2 mt-2"
             >
               <Play className="w-4 h-4" /> Begin Session
@@ -625,7 +625,7 @@ function BottomNav({ active }) {
   const navigate = useNavigate()
   const items = [
     { to: '/dashboard',    Icon: Flame,    label: 'Home' },
-    { to: '/dashboard',    Icon: Dumbbell, label: 'Train' },
+    { to: '/workout',      Icon: Dumbbell, label: 'Train' },
     { to: '/nutrition',    Icon: Utensils, label: 'Fuel' },
     { to: '/ai',           Icon: Zap,      label: 'Oracle' },
     { to: '/profile',      Icon: User,     label: 'Profile' },

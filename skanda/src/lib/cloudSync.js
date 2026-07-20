@@ -116,10 +116,7 @@ export async function runCloudHydration(userId) {
     hydrateMeasurements(measurements)
     hydrateNutritionDays(nutritionDays)
     hydratePhotos(photos)
-    // Only stamp as synced if we got actual data back — prevents locking out fresh devices
-    if (measurements.length || nutritionDays.length || photos.length) {
-      markSynced()
-    }
+    markSynced()
   } catch {
     // Hydration is best-effort — never throw
   }

@@ -297,18 +297,22 @@ export function calculateTier(data) {
   else score += pullups * 1.5
 
   // Bench ratio (0-20 pts)
-  const benchRatio = bench_lbs / weight_lbs
-  if (benchRatio >= 1.5) score += 20
-  else if (benchRatio >= 1.0) score += 14
-  else if (benchRatio >= 0.75) score += 8
-  else score += benchRatio * 8
+  if (weight_lbs > 0) {
+    const benchRatio = bench_lbs / weight_lbs
+    if (benchRatio >= 1.5) score += 20
+    else if (benchRatio >= 1.0) score += 14
+    else if (benchRatio >= 0.75) score += 8
+    else score += benchRatio * 8
+  }
 
   // Squat ratio (0-20 pts)
-  const squatRatio = squat_lbs / weight_lbs
-  if (squatRatio >= 2.0) score += 20
-  else if (squatRatio >= 1.5) score += 14
-  else if (squatRatio >= 1.0) score += 8
-  else score += squatRatio * 6
+  if (weight_lbs > 0) {
+    const squatRatio = squat_lbs / weight_lbs
+    if (squatRatio >= 2.0) score += 20
+    else if (squatRatio >= 1.5) score += 14
+    else if (squatRatio >= 1.0) score += 8
+    else score += squatRatio * 6
+  }
 
   // Mile time (0-10 pts)
   const mileMins = mile_secs / 60

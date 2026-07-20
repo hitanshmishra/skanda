@@ -209,10 +209,11 @@ export async function getPRs(userId) {
 export async function saveHomeWorkoutSession(userId, session) {
   if (!supabase || isDemo(userId)) return { data: [{ id: 'demo' }], error: null }
   return supabase.from('home_workout_sessions').insert({
-    user_id:       userId,
-    day_type:      session.day_type,
+    user_id:        userId,
+    day_type:       session.day_type,
     exercises_json: session.exercises,
     duration_secs:  session.duration_secs,
+    completed_at:   new Date().toISOString(),
   }).select()
 }
 

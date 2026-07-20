@@ -29,7 +29,7 @@ function getTodaySchedule(daysPerWeek) {
 export default function Dashboard() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { profile, logout, session }  = useAuth()
+  const { profile, setProfile, logout, session }  = useAuth()
   const [avatar] = useState(() => getAvatar())
   const [plan, setPlan]       = useState(null)
   const [nutrition, setNutr]  = useState([])
@@ -117,6 +117,7 @@ export default function Dashboard() {
       const updatedNutrition = getNutritionTargets(w, profile?.goal || 'muscle_gain')
       const updatedProfile = { ...profile, weight_lbs: w, nutrition_targets: updatedNutrition }
       cacheProfile(updatedProfile)
+      setProfile(updatedProfile)
       if (session?.user?.id) {
         await logWeightDB(session.user.id, w)
         await upsertProfile(session.user.id, { weight_lbs: w, nutrition_targets: updatedNutrition })

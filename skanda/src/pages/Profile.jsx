@@ -605,7 +605,7 @@ export default function Profile() {
               <div className="space-y-2 mb-4">
                 {[
                   { icon: Zap,    text: 'Unlimited Oracle AI insights' },
-                  { icon: Shield, text: 'Gemini Vision meal scanning' },
+                  { icon: Shield, text: 'AI Vision meal scanning' },
                   { icon: Crown,  text: 'Weekly adaptive program evolution' },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="flex items-center gap-2">

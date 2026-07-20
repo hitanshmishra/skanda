@@ -174,7 +174,7 @@ export default function MealScanner() {
                 <div className="absolute inset-0 bg-skanda-bg/80 flex flex-col items-center justify-center gap-3">
                   <div className="w-10 h-10 border-2 border-skanda-gold border-t-transparent rounded-full animate-spin" />
                   <p className="text-skanda-gold text-sm font-semibold">Analyzing meal...</p>
-                  <p className="text-skanda-dim text-xs">Gemini Vision is counting your macros</p>
+                  <p className="text-skanda-dim text-xs">AI Vision is counting your macros</p>
                 </div>
               )}
             </>
